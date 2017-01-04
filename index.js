@@ -378,23 +378,23 @@ const fetch = () => {
     })
     .find("#faresOutbound .product_price")
     .then((priceMarkup) => {
-      if (fareType == 'DOLLARS') {
-        const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
-        var price = parseInt(matches[1])
-      } else {
+      if (fareType == 'POINTS') {
         const matches = priceMarkup.text().split(',').join('')
         var price = parseInt(matches)
+      } else {
+        const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
+        var price = parseInt(matches[1])
       }
       fares.outbound.push(price)
     })
     .find("#faresReturn .product_price")
     .then((priceMarkup) => {
-      if (fareType == 'DOLLARS') {
-        const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
-        var price = parseInt(matches[1])
-      } else {
+      if (fareType == 'POINTS') {
         const matches = priceMarkup.text().split(',').join('')
         var price = parseInt(matches)
+      } else {
+        const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
+        var price = parseInt(matches[1])
       }
       fares.return.push(price)
     })
