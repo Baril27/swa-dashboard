@@ -32,7 +32,8 @@ node-gyp rebuild
 ## Usage
 It will scrape Southwest's prices every `n` minutes (`n` = whatever interval you
 define via the `--interval` flag) and compare the results, letting you know the
-difference in price since the last interval. The default interval is 30 mins.
+difference in price since the last interval. The default interval is 30 mins and
+the default fare type is dollars.
 
 You may optionally set the `--individual-deal-price` flag, which will alert you
 if either fare price falls below the threshold you define. There is also the
@@ -46,7 +47,7 @@ swa \
   --to 'LGA' \
   --leave-date '11/01/2016' \
   --return-date '11/08/2016' \
-  --fare-type 'DOLLARS' \ # Can be DOLLARS or POINTS
+  --fare-type 'DOLLARS' \ # Can be DOLLARS or POINTS (optional)
   --passengers 2 \
   --individual-deal-price 50 \ # In dollars or points (optional)
   --total-deal-price 120 \ # In dollars or points (optional)
