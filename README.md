@@ -46,9 +46,10 @@ swa \
   --to 'LGA' \
   --leave-date '11/01/2016' \
   --return-date '11/08/2016' \
+  --fare-type 'DOLLARS' \ # Can be DOLLARS or POINTS
   --passengers 2 \
-  --individual-deal-price 50 \ # In dollars (optional)
-  --total-deal-price 120 \ # In dollars (optional)
+  --individual-deal-price 50 \ # In dollars or points (optional)
+  --total-deal-price 120 \ # In dollars or points (optional)
   --interval 5 # In minutes (optional)
 ```
 
