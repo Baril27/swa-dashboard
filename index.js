@@ -364,25 +364,23 @@ const fetch = () => {
     .then((priceMarkup) => {
       if (fareType == 'DOLLARS') {
         const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
-        const price = parseInt(matches[1])
-        fares.outbound.push(price)
+        var price = parseInt(matches[1])
       } else {
         const matches = priceMarkup.text().split(',').join('')
-        const price = parseInt(matches)
-        fares.outbound.push(price)
+        var price = parseInt(matches)
       }
+      fares.outbound.push(price)
     })
     .find("#faresReturn .product_price")
     .then((priceMarkup) => {
       if (fareType == 'DOLLARS') {
         const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
-        const price = parseInt(matches[1])
-        fares.return.push(price)
+        var price = parseInt(matches[1])
       } else {
         const matches = priceMarkup.text().split(',').join('')
-        const price = parseInt(matches)
-        fares.return.push(price)
+        var price = parseInt(matches)
       }
+      fares.return.push(price)
     })
     .done(() => {
       const lowestOutboundFare = Math.min(...fares.outbound)
