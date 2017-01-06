@@ -53,6 +53,7 @@ process.argv.forEach((arg, i, argv) => {
       break
     case "--fare-type":
       fareType = argv[i + 1]
+      fareType = fareType.toUpperCase()
       break
     case "--passengers":
       adultPassengerCount = argv[i + 1]
