@@ -361,7 +361,7 @@ const formatPrice = (price) => {
  * @return {Int}
  */
 const parsePriceMarkup = (priceMarkup) => {
-  if (fareType == 'POINTS') {
+  if (fareType === 'POINTS') {
     const matches = priceMarkup.text().split(',').join('')
     return parseInt(matches)
   } else {
