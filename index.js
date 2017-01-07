@@ -347,11 +347,27 @@ const sendTextMessage = (message) => {
  */
 const formatPrice = (price) => {
   if (fareType === 'POINTS') {
-    price = `${price} pts`
+    return `${price} pts`
   } else {
-    price = `\$${price}`
+    return `\$${price}`
   }
-  return price
+}
+
+/**
+ * Parse and return pricing from HTML markup
+ *
+ * @param {Str} priceMarkup
+ *
+ * @return {Int}
+ */
+const parsePriceMarkup = (priceMarkup) => {
+  if (fareType == 'POINTS') {
+    const matches = priceMarkup.text().split(',').join('')
+    return parseInt(matches)
+  } else {
+    const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
+    return parseInt(matches[1])
+  }
 }
 
 /**
@@ -378,24 +394,12 @@ const fetch = () => {
     })
     .find("#faresOutbound .product_price")
     .then((priceMarkup) => {
-      if (fareType == 'POINTS') {
-        const matches = priceMarkup.text().split(',').join('')
-        var price = parseInt(matches)
-      } else {
-        const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
-        var price = parseInt(matches[1])
-      }
+      const price = parsePriceMarkup(priceMarkup)
       fares.outbound.push(price)
     })
     .find("#faresReturn .product_price")
     .then((priceMarkup) => {
-      if (fareType == 'POINTS') {
-        const matches = priceMarkup.text().split(',').join('')
-        var price = parseInt(matches)
-      } else {
-        const matches = priceMarkup.toString().match(/\$.*?(\d+)/)
-        var price = parseInt(matches[1])
-      }
+      const price = parsePriceMarkup(priceMarkup)
       fares.return.push(price)
     })
     .done(() => {
