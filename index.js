@@ -52,8 +52,7 @@ process.argv.forEach((arg, i, argv) => {
       returnDateString = argv[i + 1]
       break
     case "--fare-type":
-      fareType = argv[i + 1]
-      fareType = fareType.toUpperCase()
+      fareType = argv[i + 1].toUpperCase()
       break
     case "--passengers":
       adultPassengerCount = argv[i + 1]
@@ -347,10 +346,10 @@ const sendTextMessage = (message) => {
  * @return {Str}
  */
 const formatPrice = (price) => {
-  if (fareType == 'POINTS') {
-    var price = `${price} pts`
+  if (fareType === 'POINTS') {
+    price = `${price} pts`
   } else {
-    var price = `\$${price}`
+    price = `\$${price}`
   }
   return price
 }
@@ -500,7 +499,7 @@ dashboard.settings([
   `Destination airport: ${destinationAirport}`,
   `Outbound date: ${outboundDateString}`,
   `Return date: ${returnDateString}`,
-  `Fare Type: ${fareType}`,
+  `Fare type: ${fareType}`,
   `Passengers: ${adultPassengerCount}`,
   `Interval: ${pretty(interval * TIME_MIN)}`,
   `Individual deal price: ${individualDealPrice ? `<= ${formatPrice(individualDealPrice)}` : "disabled"}`,
