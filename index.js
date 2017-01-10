@@ -45,6 +45,8 @@ var individualDealPrice
 var totalDealPrice
 var interval = 30 // In minutes
 var fareType = "DOLLARS"
+var returnAirport = "RoundTrip"
+var twoWayTrip = true
 
 // Parse command line options (no validation, sorry!)
 process.argv.forEach((arg, i, argv) => {
@@ -387,6 +389,18 @@ const parsePriceMarkup = (priceMarkup) => {
 }
 
 /**
+ * Determine One way or round trip
+ *
+ * @return {Void}
+ */
+const determineTrip = () => {
+  if (returnDateString === undefined) {
+    returnAirport = ""
+    twoWayTrip = false
+  }
+}
+
+/**
  * Fetch latest Southwest prices
  *
  * @return {Void}
@@ -395,9 +409,9 @@ const fetch = () => {
   osmosis
     .get("https://www.southwest.com")
     .submit(".booking-form--form", {
-      twoWayTrip: true,
+      twoWayTrip,
       airTranRedirect: "",
-      returnAirport: "RoundTrip",
+      returnAirport,
       outboundTimeOfDay,
       returnTimeOfDay,
       seniorPassengerCount: 0,
@@ -410,6 +424,7 @@ const fetch = () => {
     })
     .find("#faresOutbound .product_price")
     .then((priceMarkup) => {
+      console.log()
       const price = parsePriceMarkup(priceMarkup)
       fares.outbound.push(price)
     })
@@ -484,10 +499,16 @@ const fetch = () => {
           }
         }
 
-        dashboard.log([
-          `Lowest fares for an outbound flight is currently ${formatPrice([lowestOutboundFare, outboundFareDiffString].filter(i => i).join(" "))}`,
-          `Lowest fares for a return flight is currently ${formatPrice([lowestReturnFare, returnFareDiffString].filter(i => i).join(" "))}`
-        ])
+        if (twoWayTrip === true) {
+          dashboard.log([
+            `Lowest fares for an outbound flight is currently ${formatPrice([lowestOutboundFare, outboundFareDiffString].filter(i => i).join(" "))}`,
+            `Lowest fares for a return flight is currently ${formatPrice([lowestReturnFare, returnFareDiffString].filter(i => i).join(" "))}`
+          ])
+        } else {
+          dashboard.log([
+            `Lowest fares for an outbound flight is currently ${formatPrice([lowestOutboundFare, outboundFareDiffString].filter(i => i).join(" "))}`
+          ])
+        }
 
         dashboard.plot({
           outbound: lowestOutboundFare,
@@ -513,6 +534,9 @@ airports.forEach((airport) => {
   }
 })
 
+// Determine if trip is round trip or one way
+determineTrip()
+
 // Print settings
 dashboard.settings([
   `Origin airport: ${originAirport}`,
@@ -522,6 +546,7 @@ dashboard.settings([
   `Return date: ${returnDateString}`,
   `Return time: ${returnTimeOfDay}`,
   `Fare type: ${fareType}`,
+  `Two way trip: ${twoWayTrip}`,
   `Passengers: ${adultPassengerCount}`,
   `Interval: ${pretty(interval * TIME_MIN)}`,
   `Individual deal price: ${individualDealPrice ? `<= ${formatPrice(individualDealPrice)}` : "disabled"}`,
